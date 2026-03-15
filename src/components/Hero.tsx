@@ -36,7 +36,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <h1 className="font-serif text-[5rem] sm:text-[6.5rem] md:text-[8rem] lg:text-[7.5rem] xl:text-[9rem] 2xl:text-[10rem] leading-[0.85] text-brand-dark tracking-[-0.04em] relative">
+            <h1 className="font-serif text-[4rem] sm:text-[6.5rem] md:text-[8rem] lg:text-[7.5rem] xl:text-[9rem] 2xl:text-[10rem] leading-[0.85] text-brand-dark tracking-[-0.04em] relative">
               Bolu<span className="align-top text-[0.6em] relative -top-4 font-sans font-light">+</span>
             </h1>
             <div className="w-full h-px bg-brand-dark/20 mt-8 mb-6"></div>
@@ -74,7 +74,7 @@ export function Hero() {
         </div>
 
         {/* Right Image Column */}
-        <div className="relative h-[600px] lg:h-[700px] w-full flex items-center justify-center">
+        <div className="relative h-[450px] sm:h-[600px] lg:h-[700px] w-full flex items-center justify-center">
             
           {/* Main Orange Shape Backdrop */}
           <motion.div 
@@ -119,7 +119,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
-            className="absolute top-[25%] left-[-5%] sm:left-[5%] z-20 flex flex-col gap-2 -rotate-3"
+            className="absolute top-[25%] left-[-5%] sm:left-[5%] z-20 flex flex-col gap-2 -rotate-3 scale-75 sm:scale-100 origin-top-left"
           >
              <div className="bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl rounded-bl-sm shadow-sm flex items-center gap-2 text-sm font-medium animate-float">
                  <div className="w-5 h-5 bg-[#FF7E5F] rounded flex items-center justify-center"><Check className="w-3 h-3 text-white" /></div>
@@ -136,7 +136,7 @@ export function Hero() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1 }}
-            className="absolute top-[15%] right-[-5%] lg:right-[-10%] z-20 bg-white/40 backdrop-blur-xl border border-white/40 p-5 rounded-3xl shadow-xl w-48 animate-float-delayed"
+            className="absolute top-[15%] right-[-5%] lg:right-[-10%] z-20 bg-white/40 backdrop-blur-xl border border-white/40 p-5 rounded-3xl shadow-xl w-48 animate-float-delayed scale-75 sm:scale-100 origin-top-right"
           >
             <p className="text-xs font-semibold text-brand-dark/60 tracking-wider">— UP TO</p>
             <h3 className="text-4xl font-serif font-bold text-brand-dark mt-1">60%</h3>
@@ -148,7 +148,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.2 }}
-            className="absolute bottom-[10%] right-[5%] lg:right-0 z-30 bg-white/60 backdrop-blur-2xl border border-white/50 p-4 rounded-[2rem] shadow-2xl flex items-center gap-4 pr-10 hover:bg-white/80 transition-colors cursor-pointer"
+            className="absolute bottom-[10%] right-[5%] lg:right-0 z-30 bg-white/60 backdrop-blur-2xl border border-white/50 p-4 rounded-[2rem] shadow-2xl flex items-center gap-4 pr-10 hover:bg-white/80 transition-colors cursor-pointer scale-75 sm:scale-100 origin-bottom-right"
           >
              <div className="w-24 h-24 bg-gray-100/80 rounded-2xl overflow-hidden relative border border-white shrink-0">
                  <Image src="/bolu_kukus_hero.png" alt="Bolu Kukus Pandan" fill className="object-cover scale-150" />
