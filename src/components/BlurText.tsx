@@ -95,7 +95,7 @@ export const BlurText: React.FC<BlurTextProps> = ({
       {springs.map((props, index) => (
         <animated.span
           key={index}
-          style={props as React.CSSProperties}
+          style={props as unknown as React.CSSProperties}
           className={`inline-block transition-transform will-change-transform ${
             animateBy === 'words' ? 'mr-[0.25em]' : ''
           }`}
