@@ -20,7 +20,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+interface Message {
+  role: string;
+  content: string;
+  name?: string;
+}
+
+const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${apiKey}`,
@@ -28,7 +34,7 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify({
         model: "llama-3.1-8b-instant",
-        messages: messages.map((m: any) => ({
+        messages: messages.map((m: Message) => ({
           role: m.role,
           content: m.content,
           ...(m.name ? { name: m.name } : {}),

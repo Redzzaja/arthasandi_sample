@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState } from 'react';
-import { useSprings, animated, SpringValue } from '@react-spring/web';
+import { useSprings, animated } from '@react-spring/web';
 
 interface BlurTextProps {
   text?: string;
@@ -75,7 +75,7 @@ export const BlurText: React.FC<BlurTextProps> = ({
     elements.map((_, i) => ({
       from: animationFrom || defaultFrom,
       to: inView
-        ? async (next: (props: any) => Promise<void>) => {
+        ? async (next: (props: Record<string, unknown>) => Promise<void>) => {
           for (const step of (animationTo || defaultTo)) {
             await next(step);
           }
@@ -95,7 +95,7 @@ export const BlurText: React.FC<BlurTextProps> = ({
       {springs.map((props, index) => (
         <animated.span
           key={index}
-          style={props as any}
+          style={props as React.CSSProperties}
           className={`inline-block transition-transform will-change-transform ${
             animateBy === 'words' ? 'mr-[0.25em]' : ''
           }`}

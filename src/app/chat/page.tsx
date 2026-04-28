@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Send, Bot, User, Loader2, Sparkles, ArrowLeft } from "lucide-react";
+import { Send, Bot, User, Loader2, ArrowLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Navbar } from "@/components/Navbar";
 
 interface Message {
   id: string;
@@ -15,6 +14,7 @@ interface Message {
 
 const SYSTEM_PROMPT = `Anda adalah asisten chatbot untuk Bolu Kukus Semarang, toko kue bolu kukus tradisional Indonesia yang terkenal. 
 
+Anda tidak memiliki pengetahuan tentang topik lain selain produk dan layanan Bolu Kukus Semarang.
 Informasi produk:
 - Bolu Kukus Pandan Klasik: Rp 45.000
 - Bolu Kukus Coklat: Rp 48.000
@@ -45,7 +45,8 @@ export default function ChatPage() {
       {
         id: "1",
         role: "assistant",
-        content: "Halo! Saya asisten Bolu Kukus Semarang. Ada yang bisa saya bantu tentang produk kami? 😊",
+        content:
+          "Halo! Saya asisten Bolu Kukus Semarang. Ada yang bisa saya bantu tentang produk kami? 😊",
         timestamp: new Date(),
       },
     ]);
@@ -98,7 +99,7 @@ export default function ChatPage() {
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
-    } catch (error) {
+    } catch {
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
@@ -119,158 +120,121 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f2f4f6] relative font-sans flex flex-col pt-20 md:pt-32">
-      {/* Site Navbar */}
-      <Navbar />
-
-      {/* Background Decorative Elements */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#FF7E5F]/10 blur-[120px] rounded-full"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-[#E8502A]/5 blur-[120px] rounded-full"></div>
-      </div>
-
-      {/* Chat Navigation Header */}
-      <div className="relative z-10 px-4 py-3 md:px-6 md:py-4 max-w-4xl mx-auto w-full flex items-center justify-between">
-        <Link 
-          href="/" 
-          className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors group"
-        >
-          <div className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center group-hover:border-gray-900 transition-all bg-white/50 backdrop-blur-sm shadow-sm">
-            <ArrowLeft className="w-4 h-4" />
-          </div>
-          <span className="text-sm font-medium hidden xs:inline sm:inline">Kembali</span>
-        </Link>
-        
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-[#FF7E5F] to-[#E8502A] flex items-center justify-center shadow-lg shadow-orange-200">
-              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+    <div className="h-screen bg-white flex flex-col">
+      {/* Simple Header with Back Button */}
+      <div className="border-b border-gray-100 bg-white px-4 py-3">
+        <div className="max-w-3xl mx-auto flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2 text-gray-600 hover:text-gray-900">
+            <ArrowLeft className="w-5 h-5" />
+            <span className="font-medium">Kembali</span>
+          </Link>
+          
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#FF7E5F] to-[#E8502A] flex items-center justify-center">
+              <Bot className="w-4 h-4 text-white" />
             </div>
-            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-500 border-2 border-white rounded-full"></span>
-          </div>
-          <div className="hidden sm:block">
-            <h1 className="font-serif text-lg font-bold text-gray-900 leading-tight">AI Assistant</h1>
-            <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Selalu Siap Membantu</p>
+            <div className="text-sm">
+              <p className="font-medium text-gray-900">AI Assistant</p>
+              <p className="text-xs text-green-500">Online</p>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Chat Container */}
-      <main className="relative z-10 flex-1 max-w-4xl mx-auto w-full px-3 sm:px-4 md:px-6 flex flex-col pb-4">
-        <motion.div 
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="bg-white/70 backdrop-blur-2xl rounded-2xl sm:rounded-[2rem] shadow-2xl shadow-gray-200/50 border border-white/50 flex-1 flex flex-col overflow-hidden"
-        >
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-8 space-y-4 sm:space-y-6 custom-scrollbar">
-            <AnimatePresence mode="popLayout">
-              {messages.map((message) => (
-                <motion.div
-                  key={message.id}
-                  layout
-                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  className={`flex gap-2 sm:gap-4 ${message.role === "user" ? "flex-row-reverse" : ""}`}
-                >
-                  <div
-                    className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 shadow-sm ${
-                      message.role === "assistant"
-                        ? "bg-gradient-to-br from-[#FF7E5F] to-[#E8502A]"
-                        : "bg-gray-900 outline outline-4 outline-gray-50"
-                    }`}
-                  >
-                    {message.role === "assistant" ? (
-                      <Bot className="w-4 h-4" />
-                    ) : (
-                      <User className="w-4 h-4" />
-                    )}
-                  </div>
-                  <div
-                    className={`max-w-[75%] sm:max-w-[80%] rounded-2xl sm:rounded-3xl px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 shadow-sm ${
-                      message.role === "user"
-                        ? "bg-gray-900 text-white rounded-tr-sm"
-                        : "bg-white border border-gray-100 text-gray-800 rounded-tl-sm"
-                    }`}
-                  >
-                    <p className="text-sm whitespace-pre-wrap leading-relaxed">
-                      {message.content}
-                    </p>
-                    {isMounted && (
-                      <div className={`mt-1.5 sm:mt-2 text-[10px] font-medium opacity-40 ${message.role === "user" ? "text-right" : "text-left"}`}>
-                        {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-            
-            {isLoading && (
-              <motion.div 
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto bg-gray-50">
+        <div className="max-w-3xl mx-auto px-4 py-6">
+          <AnimatePresence mode="popLayout">
+            {messages.map((message) => (
+              <motion.div
+                key={message.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex gap-2 sm:gap-4"
+                exit={{ opacity: 0 }}
+                className={`flex gap-3 mb-6 ${
+                  message.role === "user" ? "flex-row-reverse" : ""
+                }`}
               >
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#FF7E5F] to-[#E8502A] flex items-center justify-center">
-                  <Bot className="w-4 h-4" />
+                {/* Avatar */}
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
+                    message.role === "assistant"
+                      ? "bg-gradient-to-br from-[#FF7E5F] to-[#E8502A]"
+                      : "bg-gray-900"
+                  }`}
+                >
+                  {message.role === "assistant" ? (
+                    <Bot className="w-4 h-4 text-white" />
+                  ) : (
+                    <User className="w-4 h-4 text-white" />
+                  )}
                 </div>
-                <div className="bg-white border border-gray-100 rounded-2xl sm:rounded-3xl rounded-tl-sm px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4">
-                  <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#FF7E5F] animate-spin" />
+
+                {/* Message */}
+                <div
+                  className={`max-w-[75%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
+                    message.role === "user"
+                      ? "bg-gray-900 text-white rounded-tr-sm"
+                      : "bg-white text-gray-800 rounded-tl-sm shadow-sm border border-gray-200"
+                  }`}
+                >
+                  <p>{message.content}</p>
+                  {isMounted && (
+                    <span className="text-[10px] mt-1.5 block opacity-50">
+                      {new Date(message.timestamp).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
+                  )}
                 </div>
               </motion.div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
+            ))}
+          </AnimatePresence>
 
-          {/* Input Area */}
-          <div className="p-3 sm:p-4 md:p-8 bg-white/50 border-t border-white/50 backdrop-blur-md">
-            <div className="flex gap-2 sm:gap-4 items-end max-w-3xl mx-auto">
-              <div className="flex-1 relative group">
-                <textarea
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Ketik pesan..."
-                  rows={1}
-                  className="w-full px-4 sm:px-6 py-3 sm:py-4 pr-10 sm:pr-14 bg-white border border-gray-200 rounded-2xl sm:rounded-[2rem] resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-[#FF7E5F]/10 focus:border-[#FF7E5F]/50 transition-all shadow-sm text-sm sm:text-base"
-                  style={{ maxHeight: "120px" }}
-                />
+          {isLoading && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex gap-3"
+            >
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#FF7E5F] to-[#E8502A] flex items-center justify-center">
+                <Bot className="w-4 h-4 text-white" />
               </div>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={sendMessage}
-                disabled={!input.trim() || isLoading}
-                className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-[1.5rem] bg-gradient-to-br from-[#FF7E5F] to-[#E8502A] text-white flex items-center justify-center disabled:opacity-50 disabled:grayscale transition-all shadow-xl shadow-orange-200/50 hover:shadow-orange-300/60"
-              >
-                <Send className="w-5 sm:w-6 h-5 sm:h-6" />
-              </motion.button>
-            </div>
-            <p className="text-[10px] font-bold text-gray-400 mt-3 sm:mt-4 text-center uppercase tracking-[0.2em]">
-              Bolu Kukus Semarang AI
-            </p>
-          </div>
-        </motion.div>
-      </main>
+              <div className="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm border border-gray-200">
+                <Loader2 className="w-4 h-4 text-[#FF7E5F] animate-spin" />
+              </div>
+            </motion.div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+      </div>
 
-      <style jsx global>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 5px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(0, 0, 0, 0.05);
-          border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(0, 0, 0, 0.1);
-        }
-      `}</style>
+      {/* Input */}
+      <div className="border-t border-gray-200 bg-white px-4 py-4">
+        <div className="max-w-3xl mx-auto flex gap-3">
+          <textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Ketik pesan..."
+            rows={1}
+            className="flex-1 px-4 py-3 bg-gray-100 border-0 rounded-2xl resize-none text-sm min-h-[48px] max-h-[120px] focus:outline-none focus:ring-2 focus:ring-[#FF7E5F]/30"
+          />
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={sendMessage}
+            disabled={!input.trim() || isLoading}
+            className="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF7E5F] to-[#E8502A] text-white flex items-center justify-center disabled:opacity-40 disabled:grayscale"
+          >
+            <Send className="w-5 h-5" />
+          </motion.button>
+        </div>
+        <p className="text-[10px] text-gray-400 mt-2 text-center">
+          Bolu Kukus Semarang AI
+        </p>
+      </div>
     </div>
   );
 }
